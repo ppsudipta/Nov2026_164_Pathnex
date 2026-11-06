@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven-3.8.1'
+        jdk 'JDK-17'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Pathnex/sample-java-app.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean compile'
+            }
+            post {
+                success {
+                    echo 'Build stage passed successfully.'
+                }
+                failure {
+                    echo 'Build stage failed: Maven compilation encountered errors.'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    sh 'mvn test'
+                }
+            }
+            post {
+                always {
+                    // Record test results even when tests fail
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+                }
+                failure {
+                    echo 'Test stage failed: One or more unit tests failed. Inspect test reports.'
+                }
+                success {
+                    echo 'Test stage passed successfully.'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution complete.'
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check previous stage logs.'
+        }
+    }
+}
