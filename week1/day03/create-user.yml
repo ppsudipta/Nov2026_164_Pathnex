@@ -1,0 +1,11 @@
+---
+- name: Create Pathnex user
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Create user pathnex-admin
+      ansible.builtin.user:
+        name: pathnex-admin
+        shell: /bin/bash
+        state: present
