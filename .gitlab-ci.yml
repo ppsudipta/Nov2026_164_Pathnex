@@ -1,0 +1,9 @@
+stages:
+  - test
+
+list_files:
+  stage: test
+  script:
+    - echo "Repository checkout successful"
+    - pwd
+    - ls -la

@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/ppsudipta/Nov2026_Sudipta_Pathnex.git'
+            }
+        }
+
+        stage('List Files') {
+            steps {
+                sh 'ls -la'
+            }
+        }
+    }
+}
