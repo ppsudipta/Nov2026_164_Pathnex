@@ -1,0 +1,12 @@
+stages:
+  - build-and-test
+
+node-pipeline:
+  stage: build-and-test
+  image: node:16
+  script:
+    - git clone https://github.com/Pathnex/sample-node-app.git
+    - cd sample-node-app
+    - npm install
+    - npm test
+    - npm run build
