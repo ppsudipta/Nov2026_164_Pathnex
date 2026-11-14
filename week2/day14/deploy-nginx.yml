@@ -1,0 +1,32 @@
+---
+- name: Install Nginx & Deploy HTML File
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install Nginx package
+      package:
+        name: nginx
+        state: present
+
+    - name: Deploy custom index.html
+      copy:
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: nginx
+        group: nginx
+        mode: '0644'
+      notify: Restart Nginx
+
+    - name: Ensure Nginx is running and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+

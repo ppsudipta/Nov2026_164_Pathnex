@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pathnex-deployment
+  labels:
+    app: pathnex-mini
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pathnex-mini
+  template:
+    metadata:
+      labels:
+        app: pathnex-mini
+    spec:
+      containers:
+        - name: web
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+
