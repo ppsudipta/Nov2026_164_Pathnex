@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "PathnexBucket" {
-  bucket = "pathnex-devops-bucket"
+  bucket = "pathnex-devops-bucket-sudipta-164"
 
   tags = {
     Name = "PathnexBucket"

@@ -15,8 +15,8 @@ ansible-playbook -i inventory.ini install-java.yml
 ---
 
 ## 2. 🔹 Terraform — Create S3 Bucket (`main.tf`)
-- Creates `aws_s3_bucket.PathnexBucket` named `pathnex-devops-bucket` in `us-east-1`.
-- Run against **your own AWS account** (bucket names are globally unique — change the name if taken).
+- Creates `aws_s3_bucket.PathnexBucket` named `pathnex-devops-bucket-sudipta-164` in `us-east-1`.
+- Run against **your own AWS free-tier account**.
 
 ```bash
 terraform init
