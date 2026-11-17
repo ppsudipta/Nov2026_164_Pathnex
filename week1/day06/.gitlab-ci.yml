@@ -1,0 +1,62 @@
+stages:
+  - build
+  - test
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+
+build:
+  stage: build
+  image: maven:3.8.1-jdk-17
+  script:
+    - echo "Cloning sample-java-app repository..."
+    - git clone https://github.com/Pathnex/sample-java-app.git
+    - cd sample-java-app
+    - echo "Compiling Java application..."
+    - |
+      mvn clean compile || {
+        EXIT_CODE=$?
+        echo "Maven compile failed with exit code: $EXIT_CODE"
+        exit $EXIT_CODE
+      }
+  artifacts:
+    name: "build-artifacts-$CI_COMMIT_REF_SLUG"
+    paths:
+      - sample-java-app/
+    expire_in: 1 hour
+  after_script:
+    - echo "Build job status: $CI_JOB_STATUS"
+
+test:
+  stage: test
+  image: maven:3.8.1-jdk-17
+  dependencies:
+    - build
+  script:
+    - cd sample-java-app
+    - echo "Running unit tests..."
+    - |
+      mvn test || {
+        EXIT_CODE=$?
+        echo "Maven test failed with exit code: $EXIT_CODE"
+        exit $EXIT_CODE
+      }
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - sample-java-app/target/surefire-reports/TEST-*.xml
+    paths:
+      - sample-java-app/target/
+    expire_in: 1 day
+  after_script:
+    - |
+      if [ "$CI_JOB_STATUS" = "failed" ]; then
+        echo "Tests failed! Check test reports in artifacts."
+      else
+        echo "All tests passed successfully!"
+      fi
