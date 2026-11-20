@@ -1,0 +1,9 @@
+# Pathnex Configuration File
+# Managed by Ansible
+
+APPLICATION_NAME=PathnexApp
+ENVIRONMENT={{ env | default('production') }}
+SERVER_HOST={{ ansible_default_ipv4.address | default('127.0.0.1') }}
+PORT=8080
+MAX_CONNECTIONS=1024
+LOG_LEVEL=INFO
