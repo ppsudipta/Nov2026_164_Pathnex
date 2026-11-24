@@ -1,0 +1,17 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_db_instance" "PathnexRDS" {
+  allocated_storage   = 20
+  engine              = "mysql"
+  instance_class      = "db.t3.micro"
+  db_name             = "pathnexdb"
+  username            = "admin"
+  password            = "password123"
+  skip_final_snapshot = true
+
+  tags = {
+    Name = "Pathnex-RDS"
+  }
+}
