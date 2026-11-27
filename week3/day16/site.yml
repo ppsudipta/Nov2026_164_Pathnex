@@ -1,0 +1,6 @@
+---
+- name: Apply Pathnex role
+  hosts: all
+  become: yes
+  roles:
+    - pathnex
