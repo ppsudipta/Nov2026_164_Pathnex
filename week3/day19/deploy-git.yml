@@ -1,0 +1,15 @@
+---
+- name: Deploy app from Git for Pathnex
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install git
+      yum:
+        name: git
+        state: present
+
+    - name: Clone repository
+      git:
+        repo: "https://github.com/pathnex/app.git"
+        dest: "/opt/pathnex-app"
